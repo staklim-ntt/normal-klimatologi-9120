@@ -33,20 +33,27 @@ function makeChart(id,key){
 
   const chart=document.getElementById(id);
   const traces=[];
-  const base={mode:'lines+markers+text',textposition:'top center',hovertemplate:'%{x}<br>%{y}<extra>%{fullData.name}</extra>',line:{width:3},marker:{size:9}};
+  const base={mode:'lines+markers+text',textposition:'top center',hovertemplate:'<b>%{x}</b><br>%{fullData.name}: %{y}<extra></extra>',line:{width:3},marker:{size:8}};
 
-  if(d.a)traces.push({...base,x:months,y:d.a,name:d.aName,text:d.a.map(String),line:{color:'#1479c9',width:3},marker:{color:'#1479c9',size:9}});
-  if(d.b)traces.push({...base,x:months,y:d.b,name:d.bName,text:d.b.map(String),line:{color:'#ed7f25',width:3},marker:{color:'#ed7f25',size:9},yaxis:d.dual?'y2':'y'});
-  if(d.c)traces.push({...base,x:months,y:d.c,name:d.cName,text:d.c.map(String),line:{color:'#7058a8',width:3},marker:{color:'#7058a8',size:9}});
+  if(d.a)traces.push({...base,x:months,y:d.a,name:d.aName,text:d.a.map(String),line:{color:'#1479c9',width:3},marker:{color:'#1479c9',size:8}});
+  if(d.b)traces.push({...base,x:months,y:d.b,name:d.bName,text:d.b.map(String),line:{color:'#ed7f25',width:3},marker:{color:'#ed7f25',size:8},yaxis:d.dual?'y2':'y'});
+  if(d.c)traces.push({...base,x:months,y:d.c,name:d.cName,text:d.c.map(String),line:{color:'#7058a8',width:3},marker:{color:'#7058a8',size:8}});
 
-  const layout={autosize:true,height:430,margin:{l:58,r:d.dual?68:28,t:28,b:55},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{family:'Inter, Arial, sans-serif',color:'#40566c',size:12},hovermode:'x unified',hoverlabel:{bgcolor:'#fff',font:{color:'#10243a'}},legend:{orientation:'h',y:1.08,x:0,font:{size:12}},xaxis:{title:'Bulan',fixedrange:false,showgrid:false,zeroline:false},yaxis:{title:d.unit,gridcolor:'#dce8f1',zeroline:false},dragmode:'zoom',hoverdistance:20,showlegend:traces.length>1};
+  const layout={autosize:true,height:430,margin:{l:58,r:d.dual?68:28,t:55,b:55},paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{family:'Inter, Arial, sans-serif',color:'#40566c',size:12},hovermode:'x unified',hoverlabel:{bgcolor:'#fff',font:{color:'#10243a'}},legend:{orientation:'h',y:1.06,x:0,font:{size:12}},xaxis:{title:'Bulan',fixedrange:false,showgrid:false,zeroline:false},yaxis:{title:d.unit,gridcolor:'#dce8f1',zeroline:false},dragmode:'zoom',hoverdistance:20,showlegend:traces.length>1};
 
   if(d.dual){
     layout.yaxis.title='Curah Hujan (mm)';
     layout.yaxis2={title:'Hari Hujan (hari)',overlaying:'y',side:'right',showgrid:false,zeroline:false};
   }
 
-  Plotly.newPlot(chart,traces,layout,{responsive:true,displaylogo:false,scrollZoom:true,modeBarButtonsToRemove:['lasso2d','select2d'],toImageButtonOptions:{format:'png',filename:'normal-klimatologi-'+key,width:1600,height:900,scale:2}});
+  Plotly.newPlot(chart,traces,layout,{
+    responsive:true,
+    displaylogo:false,
+    displayModeBar:'hover',
+    scrollZoom:true,
+    modeBarButtons:[['zoom2d','pan2d','resetScale2d','toImage'] ],
+    toImageButtonOptions:{format:'png',filename:'normal-klimatologi-'+key,width:1600,height:900,scale:2}
+  });
 }
 
 function initChart(){
